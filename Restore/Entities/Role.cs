@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Restore.Entities
 {
-    public class User : IdentityUser<int>
+    public class Role : IdentityRole<int>
     {
-        public UserAddress Address { get; set; }
 
     }
 }
