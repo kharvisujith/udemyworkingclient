@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "epSBptlj1i7dt4gnpCsU/CCeRMLO6D/9XLtChtss3cqeZ+ECSqS4J8dB6L7lpRTYXczaQGTirGU732IBbNTi1g==",
+  "dgSpecHash": "ttK9Ka0MY2btX4oFvrNUlYXNakns0du1KnhOYS0qo6t6BWpm5TxkbjzfU8etDVu7jIJxStxG7CgbFNXKCXi27g==",
   "success": true,
   "projectFilePath": "C:\\sujith\\Udeyme_course\\Restore\\Restore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.14\\microsoft.aspnetcore.authentication.jwtbearer.5.0.14.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.4\\microsoft.aspnetcore.authentication.jwtbearer.5.0.4.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.4\\microsoft.aspnetcore.cryptography.internal.5.0.4.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.4\\microsoft.aspnetcore.cryptography.keyderivation.5.0.4.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.4\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.4.nupkg.sha512",

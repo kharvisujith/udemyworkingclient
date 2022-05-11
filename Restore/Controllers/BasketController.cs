@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Restore.Data;
 using Restore.DTOs;
 using Restore.Entities;
+using Restore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Restore.Controllers
         [HttpGet(Name = "GetBasket")]
         public async Task<ActionResult<BasketDto>> GetBasket()
         {
-            var basket = await RetrieveBasket();
+            var basket = await RetrieveBasket(GetBuyerId());
             /*System.Diagnostics.Debug.WriteLine(basket);*/
             System.Diagnostics.Debug.WriteLine("getbasket called");
             System.Diagnostics.Debug.WriteLine("jdfksdjjfkjfkdlkldsj");
@@ -30,7 +31,7 @@ namespace Restore.Controllers
             if (basket == null) return NotFound();
             //   return basket; ===> this gives server error --> so we use DTOs 
 
-            return MapBasketToDto(basket);
+            return basket.MapBasketToDto();
 
         }
 
@@ -41,7 +42,7 @@ namespace Restore.Controllers
 
         {   
             System.Diagnostics.Debug.WriteLine("postt calledddd");
-            var basket = await RetrieveBasket();
+            var basket = await RetrieveBasket(GetBuyerId());
             if (basket == null) basket = CreateBasket();
             var product = await _context.Products.FindAsync(productId);
             if (product == null) return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
@@ -49,7 +50,7 @@ namespace Restore.Controllers
 
             var result = await _context.SaveChangesAsync() > 0;
             //  if (result) return StatusCode(201); --> instead of this we use CreatedRoute() --> only for post method
-            if (result) return CreatedAtRoute("GetBasket", MapBasketToDto(basket));
+            if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
                 
 
             return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
@@ -59,7 +60,7 @@ namespace Restore.Controllers
         [HttpDelete]
         public async Task<ActionResult> RemoveBasketItem(int productId, int quantity)
         {
-            var basket = await RetrieveBasket();
+            var basket = await RetrieveBasket(GetBuyerId());
             if (basket == null) return NotFound();
 
             basket.RemoveItem(productId, quantity);
@@ -73,31 +74,40 @@ namespace Restore.Controllers
 
         
 
-        private async  Task<Basket> RetrieveBasket()
+        private async  Task<Basket> RetrieveBasket(string buyerId)
         {
-            System.Diagnostics.Debug.WriteLine("this is retrive method");
-            if (Request.Cookies["buyerId"] == null){
-                System.Diagnostics.Debug.WriteLine("cookies does not  exists");
-            }
-            else
+            if(string.IsNullOrEmpty(buyerId))
             {
-                System.Diagnostics.Debug.WriteLine("cookies exists");
-                System.Diagnostics.Debug.WriteLine(Request.Cookies["buyerId"]);
+                Response.Cookies.Delete("buyerId");
+                return null;
             }
+        
             var bb = await _context.Basket
             .Include(i => i.Items)
             .ThenInclude(p => p.Product)
-            .FirstOrDefaultAsync(x => x.BuyerId == Request.Cookies["buyerId"]);
+            .FirstOrDefaultAsync(x => x.BuyerId == buyerId);
             return bb;
  
         }
 
+        private string GetBuyerId()
+        {
+            return User.Identity?.Name ?? Request.Cookies["buyerId"];
+        }
+
+
         private Basket CreateBasket()
         {
-            System.Diagnostics.Debug.WriteLine("this is creeateeee method");
-            var buyerId = Guid.NewGuid().ToString();
-            var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30) , HttpOnly = false, Secure = false };
-            Response.Cookies.Append("buyerId", buyerId, cookieOptions);
+
+            //  var buyerId = Guid.NewGuid().ToString();
+            var buyerId = User.Identity?.Name;
+            if (string.IsNullOrEmpty(buyerId))
+            {
+                buyerId = Guid.NewGuid().ToString();
+                var cookieOptions = new CookieOptions { IsEssential = true, Expires = DateTime.Now.AddDays(30), HttpOnly = false, Secure = false };
+                Response.Cookies.Append("buyerId", buyerId, cookieOptions);
+            }
+           
            /* System.Diagnostics.Debug.WriteLine("cookies is" + Request.Cookies["buyerId"]);*/
 
             var basket = new Basket { BuyerId = buyerId };
@@ -107,27 +117,7 @@ namespace Restore.Controllers
 
         }
 
-        private BasketDto MapBasketToDto(Basket basket)
-        {
-            return new BasketDto
-            {
-                Id = basket.Id,
-                BuyerId = basket.BuyerId,
-                Items = basket.Items.Select(item => new BasketItemDto
-                {
-                    ProductId = item.ProductId,
-                    Name = item.Product.Name,
-                    Price = item.Product.Price,
-                    PictureUrl = item.Product.PictureUrl,
-                    Type = item.Product.Type,
-                    Brand = item.Product.Brand,
-                    Quantity = item.Quantity
-
-
-                }).ToList()
-
-            };
-        }
+        
 
     }
 }

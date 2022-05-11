@@ -14,6 +14,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Restore.Data;
 using Restore.Middleware;
+using Restore.Entities;
+using Microsoft.AspNetCore.Identity;
+using Restore.Controllers.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Restore
 {
@@ -34,6 +40,33 @@ namespace Restore
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Restore", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Jwt auth header",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type= ReferenceType.SecurityScheme,
+                                Id= "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                });
+            
             });
 
             // This is extra adding for ef
@@ -41,6 +74,35 @@ namespace Restore
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors();
+
+            //for identity
+            services.AddIdentityCore<User>(opt =>
+            {
+                opt.User.RequireUniqueEmail = true;
+            }
+                )
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<StoreContext>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey  = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                        .GetBytes(Configuration["JWTSettings:TokenKey"]))
+
+                    };
+                });
+
+            services.AddAuthorization();
+            services.AddScoped<TokenServices>();
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +127,9 @@ namespace Restore
                 opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
                 
             });
+
+            // this should be before autorization
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
