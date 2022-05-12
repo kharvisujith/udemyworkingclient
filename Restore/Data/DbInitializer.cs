@@ -32,8 +32,11 @@ namespace Restore.Data
                 await userManager.AddToRoleAsync(admin, new[] { "Member", "Admin" }.ToString());
             }
 
-            if (context.Products.Any()) return;
-
+            if (context.Products.Any())
+            {
+                System.Diagnostics.Debug.WriteLine("inside products.any");
+                return;
+            }
             var products = new List<Product>
             {
                 new Product

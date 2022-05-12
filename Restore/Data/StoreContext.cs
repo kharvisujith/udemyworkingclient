@@ -36,7 +36,7 @@ namespace Restore.Data
 
             builder.Entity<Role>()
                 .HasData(
-                    new Role { Id=1, Name = "Member", NormalizedName = "Member" },
+                    new Role { Id=1, Name = "Member", NormalizedName = "MEMBER" },
                     new Role { Id =2, Name = "Admin", NormalizedName = "ADMIN" }
                 );
         }

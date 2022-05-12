@@ -263,14 +263,14 @@ namespace Restore.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "ef60b432-6d67-402c-ae97-30c220329ce3",
+                            ConcurrencyStamp = "7c286a06-fb37-4e09-b144-41f03743c9b1",
                             Name = "Member",
-                            NormalizedName = "Member"
+                            NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "98cffe24-df7f-46cb-8fc3-e341847322d7",
+                            ConcurrencyStamp = "a14fb636-6755-4124-8e41-1032a0ef99ce",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -361,11 +361,11 @@ namespace Restore.Data.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Zip")
+                    b.Property<string>("State")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("state")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Zip")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -444,7 +444,7 @@ namespace Restore.Data.Migrations
 
             modelBuilder.Entity("Restore.Entities.OrderAggregate.Order", b =>
                 {
-                    b.OwnsOne("Restore.Entities.OrderAggregate.ShippingAddress", "Shipping", b1 =>
+                    b.OwnsOne("Restore.Entities.OrderAggregate.ShippingAddress", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("INTEGER");
@@ -464,11 +464,11 @@ namespace Restore.Data.Migrations
                             b1.Property<string>("FullName")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("Zip")
+                            b1.Property<string>("State")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<int>("state")
-                                .HasColumnType("INTEGER");
+                            b1.Property<string>("Zip")
+                                .HasColumnType("TEXT");
 
                             b1.HasKey("OrderId");
 
@@ -478,7 +478,7 @@ namespace Restore.Data.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("Shipping");
+                    b.Navigation("ShippingAddress");
                 });
 
             modelBuilder.Entity("Restore.Entities.OrderAggregate.OrderItem", b =>
@@ -498,8 +498,8 @@ namespace Restore.Data.Migrations
                             b1.Property<string>("PictureUrl")
                                 .HasColumnType("TEXT");
 
-                            b1.Property<string>("ProductId")
-                                .HasColumnType("TEXT");
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("INTEGER");
 
                             b1.HasKey("OrderItemId");
 

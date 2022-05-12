@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Restore.Data.Migrations
 {
-    public partial class OrderEntityAdded : Migration
+    public partial class orderEnittyAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,13 +68,13 @@ namespace Restore.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BuyerId = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_FullName = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_Address1 = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_Address2 = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_City = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_state = table.Column<int>(type: "INTEGER", nullable: true),
-                    Shipping_Zip = table.Column<string>(type: "TEXT", nullable: true),
-                    Shipping_Country = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_FullName = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_Address1 = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_Address2 = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_City = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_State = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_Zip = table.Column<string>(type: "TEXT", nullable: true),
+                    ShippingAddress_Country = table.Column<string>(type: "TEXT", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Subtotal = table.Column<long>(type: "INTEGER", nullable: false),
                     DeliveryFree = table.Column<long>(type: "INTEGER", nullable: false),
@@ -219,7 +219,7 @@ namespace Restore.Data.Migrations
                     Address1 = table.Column<string>(type: "TEXT", nullable: true),
                     Address2 = table.Column<string>(type: "TEXT", nullable: true),
                     City = table.Column<string>(type: "TEXT", nullable: true),
-                    state = table.Column<int>(type: "INTEGER", nullable: false),
+                    State = table.Column<string>(type: "TEXT", nullable: true),
                     Zip = table.Column<string>(type: "TEXT", nullable: true),
                     Country = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -240,7 +240,7 @@ namespace Restore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ItemOrdered_ProductId = table.Column<string>(type: "TEXT", nullable: true),
+                    ItemOrdered_ProductId = table.Column<int>(type: "INTEGER", nullable: true),
                     ItemOrdered_Name = table.Column<string>(type: "TEXT", nullable: true),
                     ItemOrdered_PictureUrl = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<long>(type: "INTEGER", nullable: false),
@@ -288,12 +288,12 @@ namespace Restore.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 1, "ef60b432-6d67-402c-ae97-30c220329ce3", "Member", "Member" });
+                values: new object[] { 1, "7c286a06-fb37-4e09-b144-41f03743c9b1", "Member", "MEMBER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { 2, "98cffe24-df7f-46cb-8fc3-e341847322d7", "Admin", "ADMIN" });
+                values: new object[] { 2, "a14fb636-6755-4124-8e41-1032a0ef99ce", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

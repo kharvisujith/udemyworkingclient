@@ -43,6 +43,7 @@ namespace Restore.Controllers
         {   
             System.Diagnostics.Debug.WriteLine("postt calledddd");
             var basket = await RetrieveBasket(GetBuyerId());
+            System.Diagnostics.Debug.WriteLine("basket is" + basket);
             if (basket == null) basket = CreateBasket();
             var product = await _context.Products.FindAsync(productId);
             if (product == null) return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
@@ -98,6 +99,7 @@ namespace Restore.Controllers
 
         private Basket CreateBasket()
         {
+            System.Diagnostics.Debug.WriteLine("creTE basket calledd");
 
             //  var buyerId = Guid.NewGuid().ToString();
             var buyerId = User.Identity?.Name;

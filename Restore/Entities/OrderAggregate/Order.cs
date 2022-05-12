@@ -13,7 +13,7 @@ namespace Restore.Entities.OrderAggregate
 
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        public List<OrderItem> OrderItems { get; set; }
+        public List<OrderItem> OrderItems  { get; set; }
         public long  Subtotal { get; set; }
         public long DeliveryFree { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
