@@ -103,6 +103,7 @@ namespace Restore
 
             services.AddAuthorization();
             services.AddScoped<TokenServices>();
+            services.AddScoped<PaymentServices>();
         }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
